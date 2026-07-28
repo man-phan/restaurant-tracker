@@ -1,0 +1,39 @@
+.star-rating {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: default;
+  color: var(--text-muted);
+  font-size: 1rem;
+  transition: all 0.15s ease;
+  line-height: 1;
+}
+
+.star.filled {
+  color: #f59e0b;
+}
+
+.star.interactive {
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.star.interactive:hover,
+.star.interactive:focus {
+  color: #f59e0b;
+  transform: scale(1.2);
+  outline: none;
+}
+
+.star-rating--sm .star { font-size: 0.85rem; }
+.star-rating--md .star { font-size: 1.1rem; }
+.star-rating--lg .star { font-size: 1.5rem; }

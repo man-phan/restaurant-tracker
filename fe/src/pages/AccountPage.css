@@ -1,0 +1,420 @@
+.account-page {
+  min-height: 100vh;
+  padding:
+    max(1rem, env(safe-area-inset-top))
+    max(1rem, env(safe-area-inset-right))
+    max(1.25rem, env(safe-area-inset-bottom))
+    max(1rem, env(safe-area-inset-left));
+  background:
+    radial-gradient(circle at top left, rgba(249, 115, 22, 0.24), transparent 28%),
+    radial-gradient(circle at top right, rgba(251, 146, 60, 0.16), transparent 26%),
+    linear-gradient(180deg, #0f172a 0%, #0b1220 46%, #08111d 100%);
+  color: var(--text-primary);
+}
+
+.account-shell {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.account-panel-header h2 {
+  margin: 0;
+}
+.account-panel-subtitle {
+  margin: 0.4rem 0 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.account-panel-kicker {
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.account-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+  gap: 1rem;
+}
+
+.account-panel {
+  position: relative;
+  min-width: 0;
+  padding: 1rem;
+  border-radius: 26px;
+  background: rgba(15, 23, 42, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+}
+
+.account-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 34%);
+  pointer-events: none;
+}
+
+.account-surface > * {
+  position: relative;
+  z-index: 1;
+}
+
+.account-panel-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.account-panel-header > div {
+  min-width: 0;
+}
+
+.account-session-card,
+.account-user-card,
+.account-empty-state,
+.account-warning {
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.account-session-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: center;
+  padding: 1rem;
+}
+
+.account-session-card.guest {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.account-avatar-wrap {
+  align-self: start;
+}
+
+.account-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--accent-primary), #fb923c 72%);
+  color: #111827;
+  font-weight: 900;
+  font-size: 1.1rem;
+  box-shadow: 0 14px 24px rgba(249, 115, 22, 0.22);
+}
+
+.account-avatar-sm {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  flex: 0 0 auto;
+}
+
+.account-session-copy,
+.account-user-meta {
+  min-width: 0;
+}
+
+.account-session-title-row,
+.account-user-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.account-session-card h3,
+.account-user-card h3 {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.account-session-card p,
+.account-user-card p {
+  margin: 0.15rem 0 0;
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.account-role-badge,
+.account-self-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0.32rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.account-role-badge.role-admin {
+  background: rgba(34, 197, 94, 0.14);
+  color: #86efac;
+}
+
+.account-role-badge.role-user {
+  background: rgba(249, 115, 22, 0.16);
+  color: #fdba74;
+}
+
+.account-self-tag {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+.account-tabs {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.account-tab,
+.account-primary-btn,
+.account-secondary-btn {
+  min-height: 48px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.account-tab {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  font-weight: 800;
+}
+
+.account-tab.active {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.24), rgba(251, 146, 60, 0.14));
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(249, 115, 22, 0.18);
+}
+
+.account-form {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.account-form label {
+  display: grid;
+  gap: 0.38rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.account-form input,
+.account-role-controls select {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  padding: 0.82rem 0.95rem;
+  outline: none;
+}
+
+.account-role-controls select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #1e293b;
+  color: #f8fafc;
+  padding-right: 2.7rem;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #cbd5e1 50%),
+    linear-gradient(135deg, #cbd5e1 50%, transparent 50%);
+  background-position:
+    calc(100% - 1.15rem) calc(50% - 0.2rem),
+    calc(100% - 0.85rem) calc(50% - 0.2rem);
+  background-size: 0.38rem 0.38rem, 0.38rem 0.38rem;
+  background-repeat: no-repeat;
+}
+
+.account-role-controls select option {
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+.account-form input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.account-form input:focus,
+.account-role-controls select:focus {
+  border-color: rgba(249, 115, 22, 0.75);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.16);
+}
+
+.account-message {
+  padding: 0.85rem 0.95rem;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+}
+
+.account-message.error {
+  background: rgba(248, 113, 113, 0.12);
+  color: #fca5a5;
+}
+
+.account-message.success {
+  background: rgba(34, 197, 94, 0.12);
+  color: #86efac;
+}
+
+.account-primary-btn {
+  background: linear-gradient(135deg, var(--accent-primary), #fb923c);
+  color: #111827;
+  font-weight: 900;
+  padding: 0.9rem 1rem;
+  box-shadow: 0 16px 28px rgba(249, 115, 22, 0.18);
+}
+
+.account-secondary-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  font-weight: 800;
+  padding: 0.82rem 0.95rem;
+}
+
+.account-tab:hover,
+.account-primary-btn:hover,
+.account-secondary-btn:hover {
+  transform: translateY(-1px);
+}
+
+.account-primary-btn:disabled,
+.account-secondary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.account-warning,
+.account-empty-state {
+  margin-top: 1rem;
+  padding: 0.95rem 1rem;
+  color: var(--text-secondary);
+}
+
+.account-warning {
+  border-color: rgba(249, 115, 22, 0.26);
+  color: #fdba74;
+}
+
+.account-warning.compact {
+  margin-top: 0.8rem;
+}
+
+.account-empty-state {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  min-height: 96px;
+}
+
+.account-user-grid {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.account-user-card {
+  padding: 1rem;
+}
+
+.account-user-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.account-user-identity {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.account-role-controls {
+  margin-top: 0.9rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+}
+
+@media (max-width: 960px) {
+  .account-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .account-page {
+    padding-top: max(0.75rem, env(safe-area-inset-top));
+  }
+
+  .account-panel {
+    border-radius: 22px;
+  }
+
+  .account-session-card {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .account-session-card button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .account-user-card-top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .account-user-identity {
+    width: 100%;
+  }
+
+  .account-role-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .account-role-controls .account-secondary-btn {
+    width: 100%;
+  }
+
+  .account-role-badge,
+  .account-self-tag {
+    width: fit-content;
+  }
+}

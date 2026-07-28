@@ -1,0 +1,106 @@
+.restaurant-card {
+  display: block;
+  position: relative;
+  padding: 1.1rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  text-decoration: none;
+  transition: all 0.22s ease;
+  overflow: hidden;
+}
+
+.restaurant-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--gradient-brand);
+  transform: scaleY(0);
+  transition: transform 0.2s ease;
+  border-radius: 3px 0 0 3px;
+}
+
+.restaurant-card:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px var(--shadow-elevated);
+}
+
+.restaurant-card:hover::before { transform: scaleY(1); }
+
+.rc-header {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.rc-icon { font-size: 1.6rem; flex-shrink: 0; margin-top: 2px; }
+
+.rc-info { flex: 1; }
+
+.rc-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+
+.rc-district-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  background: var(--accent-glow);
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-bottom: 4px;
+}
+
+.rc-address {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.rc-dishes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.rc-dish-tag {
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.rc-dish-more {
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  color: var(--text-muted);
+}
+
+.rc-no-dishes {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 0;
+}
+
+.rc-arrow {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  font-weight: 300;
+}

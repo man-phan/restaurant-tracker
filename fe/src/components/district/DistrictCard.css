@@ -1,0 +1,40 @@
+.district-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.district-card:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px var(--shadow-elevated);
+}
+
+.dc-icon { font-size: 1.5rem; }
+
+.dc-content { flex: 1; }
+
+.dc-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 2px;
+}
+
+.dc-count {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.dc-arrow {
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  font-weight: 300;
+}

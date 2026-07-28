@@ -1,0 +1,25 @@
+.rating-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.rating-input-wrapper.rating-error .star { outline: 2px solid rgba(239,68,68,0.3); border-radius: 4px; }
+
+.rating-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.label-optional {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.form-textarea {
+  resize: none;
+  line-height: 1.6;
+}

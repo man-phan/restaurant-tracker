@@ -1,0 +1,122 @@
+.district-selector {
+  position: relative;
+  width: 100%;
+}
+
+.ds-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0 0.75rem;
+  transition: border-color 0.2s;
+}
+
+.ds-input-wrapper:focus-within {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.ds-icon { font-size: 1rem; flex-shrink: 0; }
+
+.ds-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0.75rem 0;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.ds-input::placeholder { color: var(--text-muted); }
+
+.ds-clear {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 4px;
+  border-radius: 50%;
+  min-width: 28px;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.ds-clear:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+.ds-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px var(--shadow-elevated);
+  overflow: hidden;
+  z-index: 50;
+  animation: dropIn 0.15s ease;
+}
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ds-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.15s;
+  min-height: 44px;
+}
+
+.ds-option:hover { background: var(--bg-hover); }
+
+.ds-no-results {
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.ds-add-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--border-color);
+  text-align: left;
+  font-size: 0.9rem;
+  color: var(--accent-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  min-height: 44px;
+}
+
+.ds-add-option:hover { background: var(--accent-glow); }
+
+.ds-add-icon {
+  font-size: 1.1rem;
+  font-weight: 400;
+}

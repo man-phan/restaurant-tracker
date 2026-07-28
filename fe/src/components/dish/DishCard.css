@@ -1,0 +1,63 @@
+.dish-card {
+  padding: 1rem 1.25rem;
+  background: var(--bg-hover);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  transition: all 0.2s ease;
+}
+
+.dish-card:hover {
+  border-color: var(--accent-primary);
+  background: var(--bg-hover-strong);
+}
+
+.dc2-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.dc2-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.dc2-note {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin: 0;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.dc2-actions {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dc2-btn {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  cursor: pointer;
+  min-height: 34px;
+}
+
+.dc2-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.dc2-btn--danger:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}

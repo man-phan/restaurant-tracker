@@ -1,0 +1,143 @@
+.district-detail-page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 1rem 1rem 2rem;
+}
+
+.dd-header { margin-bottom: 1.5rem; }
+
+.dd-back {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+  padding: 0.25rem 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.dd-back:hover { color: var(--accent-primary); }
+
+.dd-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.dd-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.dd-count {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.dd-title-edit-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.dd-title-input {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 1.05rem;
+  font-weight: 700;
+  outline: none;
+}
+
+.dd-title-input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.dd-title-input-error {
+  border-color: #ef4444;
+}
+
+.dd-title-error {
+  margin-top: 0.35rem;
+  display: block;
+  font-size: 0.78rem;
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.dd-actions-row {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dd-action-btn {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+  min-height: 38px;
+}
+
+.dd-action-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.dd-action-btn--primary {
+  background: var(--gradient-brand);
+  color: #fff;
+  border: none;
+}
+
+.dd-action-btn--primary:hover {
+  color: #fff;
+  opacity: 0.92;
+}
+
+.dd-action-btn--danger:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.restaurant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.dd-add-btn {
+  width: 100%;
+  padding: 0.875rem;
+  background: none;
+  border: 2px dashed var(--border-color);
+  border-radius: 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 52px;
+}
+
+.dd-add-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: var(--accent-glow);
+}

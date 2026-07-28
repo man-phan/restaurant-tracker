@@ -1,0 +1,21 @@
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--bg-primary);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.app-main {
+  flex: 1;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); /* space for BottomNav on mobile */
+}
+
+/* On desktop, hide bottom nav space */
+@media (min-width: 768px) {
+  .app-main {
+    padding-bottom: 0;
+    padding-top: 64px; /* space for Navbar */
+  }
+}

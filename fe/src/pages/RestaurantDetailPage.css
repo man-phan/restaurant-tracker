@@ -1,0 +1,142 @@
+.restaurant-detail-page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 0 2rem;
+}
+
+/* Hero */
+.rd-hero {
+  padding: 1.5rem 1rem 2rem;
+  background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-primary) 100%);
+  border-bottom: 1px solid var(--border-color);
+  text-align: center;
+  position: relative;
+}
+
+.rd-back-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.rd-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.rd-back {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0;
+}
+
+.rd-back:hover { color: var(--accent-primary); }
+
+.rd-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+
+.rd-name {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.rd-address {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+
+.rd-district-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  background: var(--accent-glow);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 0.75rem;
+}
+
+.rd-avg-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.25rem;
+}
+
+.rd-avg-star { color: #f59e0b; font-size: 1.1rem; }
+
+.rd-avg-num {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.rd-avg-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Dishes Section */
+.rd-dishes-section {
+  padding: 1.5rem 1rem;
+}
+
+.rd-dishes-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.rd-dishes-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.rd-dishes-count {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  background: var(--bg-hover);
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.dish-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.rd-add-dish-btn {
+  width: 100%;
+  padding: 0.875rem;
+  background: none;
+  border: 2px dashed var(--border-color);
+  border-radius: 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 52px;
+}
+
+.rd-add-dish-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: var(--accent-glow);
+}

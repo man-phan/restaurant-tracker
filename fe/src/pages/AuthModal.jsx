@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './AuthModal.css';
 
-const API = 'http://localhost:3001/api/auth';
+const API = 'https://restaurant-tracker-h5hj.onrender.com/api/auth';
 
 /* ── helpers ── */
 const post = (path, body) =>

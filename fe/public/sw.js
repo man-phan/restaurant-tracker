@@ -1,5 +1,7 @@
-const CACHE_NAME = 'fooddiary-v3';
+const CACHE_NAME = 'fooddiary-v4';
 const SHELL_ASSETS = [
+  '/',
+  '/index.html',
   '/manifest.json',
 ];
 

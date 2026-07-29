@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AccountPage.css';
 
-const API = 'http://localhost:3001/api/auth';
+const API = 'https://restaurant-tracker-h5hj.onrender.com/api/auth';
 
 async function request(path, { method = 'GET', body, token } = {}) {
   const response = await fetch(`${API}${path}`, {

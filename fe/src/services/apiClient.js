@@ -1,4 +1,4 @@
-const BASE = 'http://localhost:3001/api';
+const BASE = 'https://restaurant-tracker-h5hj.onrender.com/api';
 
 export const getAuthToken = () => {
   try {

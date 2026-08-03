@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SearchBar.css';
 
@@ -6,9 +6,32 @@ const SearchBar = ({ initialValue = '', placeholder = 'Search restaurants, dishe
   const [query, setQuery] = useState(initialValue);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setQuery(initialValue);
+  }, [initialValue]);
+
+  const handleInputChange = (e) => {
+    const val = e.target.value;
+    setQuery(val);
+    const trimmed = val.trim();
+    if (trimmed) {
+      navigate(`/search?q=${encodeURIComponent(trimmed)}`, { replace: true });
+    } else {
+      navigate('/search', { replace: true });
+    }
+  };
+
+  const handleClear = () => {
+    setQuery('');
+    navigate('/search', { replace: true });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (query.trim()) navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+    const trimmed = query.trim();
+    if (trimmed) {
+      navigate(`/search?q=${encodeURIComponent(trimmed)}`, { replace: true });
+    }
   };
 
   return (
@@ -19,14 +42,14 @@ const SearchBar = ({ initialValue = '', placeholder = 'Search restaurants, dishe
         type="search"
         className="sb-input"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={handleInputChange}
         placeholder={placeholder}
         autoFocus={autoFocus}
         autoComplete="off"
         aria-label="Search restaurants, dishes, or districts"
       />
       {query && (
-        <button type="button" className="sb-clear" onClick={() => setQuery('')} aria-label="Clear search">✕</button>
+        <button type="button" className="sb-clear" onClick={handleClear} aria-label="Clear search">✕</button>
       )}
       <button type="submit" className="sb-submit" aria-label="Search">Go</button>
     </form>

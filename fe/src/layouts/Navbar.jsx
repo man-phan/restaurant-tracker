@@ -9,6 +9,16 @@ const Navbar = () => {
     try { return JSON.parse(localStorage.getItem('auth_user')); } catch { return null; }
   });
   const navigate = useNavigate();
+  const guestWarning = 'Please sign in to add a restaurant.';
+
+  const handleAddClick = () => {
+    if (!user) {
+      navigate('/profile', { state: { warning: guestWarning } });
+      return;
+    }
+
+    setShowAdd(true);
+  };
 
   useEffect(() => {
     const syncUser = () => {
@@ -38,7 +48,7 @@ const Navbar = () => {
           <Link to="/search" className="nav-link">Search</Link>
           <Link to="/districts" className="nav-link">Districts</Link>
         </nav>
-        <button className="btn-add-primary" onClick={() => setShowAdd(true)}>
+        <button className="btn-add-primary" onClick={handleAddClick}>
           + Add Restaurant
         </button>
 

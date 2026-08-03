@@ -58,11 +58,6 @@
   transition: all 0.2s ease;
 }
 
-.nav-link:hover {
-  color: var(--text-primary);
-  background: var(--bg-hover);
-}
-
 .btn-add-primary {
   padding: 0.5rem 1.25rem;
   background: var(--gradient-brand);
@@ -75,12 +70,6 @@
   transition: all 0.2s ease;
   white-space: nowrap;
   flex-shrink: 0;
-}
-
-.btn-add-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 15px var(--shadow-brand);
 }
 
 /* ── User / Login icon area ── */
@@ -104,12 +93,6 @@
   transition: all 0.2s;
 }
 
-.btn-login-icon:hover {
-  color: var(--text-primary);
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
-}
-
 .user-avatar-btn {
   width: 38px;
   height: 38px;
@@ -121,12 +104,6 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-}
-
-.user-avatar-btn:hover {
-  opacity: 0.85;
-  transform: scale(1.05);
-  box-shadow: 0 4px 14px var(--shadow-brand);
 }
 
 .user-avatar-letter {
@@ -196,7 +173,32 @@
   transition: background 0.15s;
 }
 
-.user-dropdown-logout:hover {
-  background: rgba(248, 113, 113, 0.08);
+@media (hover: hover) and (pointer: fine) {
+  .nav-link:hover {
+    color: var(--text-primary);
+    background: var(--bg-hover);
+  }
+
+  .btn-add-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px var(--shadow-brand);
+  }
+
+  .btn-login-icon:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+  }
+
+  .user-avatar-btn:hover {
+    opacity: 0.85;
+    transform: scale(1.05);
+    box-shadow: 0 4px 14px var(--shadow-brand);
+  }
+
+  .user-dropdown-logout:hover {
+    background: rgba(248, 113, 113, 0.08);
+  }
 }
 

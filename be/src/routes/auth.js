@@ -2,24 +2,44 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
 const { OAuth2Client } = require('google-auth-library');
 const pool = require('../db');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret';
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// ─── Email transporter ──────────────────────────────────────────────────────
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,          // STARTTLS (port 587, not SSL 465)
-  family: 4,              // Force IPv4 — avoids ENETUNREACH on Render
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+// ─── Email Sender via Brevo REST API ───────────────────────────────────────
+async function sendBrevoEmail({ to, subject, html }) {
+  const apiKey = process.env.BREVO_API_KEY;
+  const senderEmail = process.env.EMAIL_USER;
+
+  if (!apiKey) {
+    throw new Error('BREVO_API_KEY is not configured in environment variables');
+  }
+
+  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'api-key': apiKey,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      sender: { name: 'FoodDiary', email: senderEmail },
+      to: [{ email: to }],
+      subject: subject,
+      htmlContent: html,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Brevo API error (${response.status}): ${errorText}`);
+  }
+
+  return response.json();
+}
+
 
 function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -202,8 +222,7 @@ router.post('/forgot-password', async (req, res) => {
       [deliveryEmail, otp, expiresAt]
     );
 
-    await transporter.sendMail({
-      from: `"FoodDiary" <${process.env.EMAIL_USER}>`,
+    await sendBrevoEmail({
       to: deliveryEmail,
       subject: 'Your FoodDiary Password Reset OTP',
       html: `

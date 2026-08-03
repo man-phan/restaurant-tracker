@@ -94,6 +94,16 @@ async function cleanOldOtps() {
 
 void (async () => {
   try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS otps (
+        id         SERIAL PRIMARY KEY,
+        email      VARCHAR(200) NOT NULL,
+        otp_code   VARCHAR(6)   NOT NULL,
+        expires_at TIMESTAMPTZ  NOT NULL,
+        used       BOOLEAN      NOT NULL DEFAULT FALSE,
+        created_at TIMESTAMPTZ  NOT NULL DEFAULT NOW()
+      )
+    `);
     await pool.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) NOT NULL DEFAULT 'user'");
     await pool.query("UPDATE users SET role='admin' WHERE username=$1", ['jiaaaminn']);
     await cleanOldOtps();

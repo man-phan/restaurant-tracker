@@ -1,4 +1,5 @@
-const BASE = 'https://restaurant-tracker-h5hj.onrender.com/api';
+const USE_LOCAL = import.meta.env.VITE_USE_LOCAL === 'false';
+const BASE = USE_LOCAL ? import.meta.env.VITE_LOCAL_API_URL : import.meta.env.VITE_PROD_API_URL;
 
 export const getAuthToken = () => {
   try {

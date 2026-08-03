@@ -22,6 +22,14 @@ function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
+function makeResetToken(email) {
+  return jwt.sign(
+    { email, purpose: 'password-reset' },
+    JWT_SECRET,
+    { expiresIn: '15m' }
+  );
+}
+
 function makeToken(user) {
   return jwt.sign(
     { id: user.id, username: user.username, email: user.email, role: user.role },
@@ -142,26 +150,47 @@ router.post('/google', async (req, res) => {
 
 // ─── POST /api/auth/forgot-password ─────────────────────────────────────────
 router.post('/forgot-password', async (req, res) => {
-  const { email } = req.body;
-  if (!email) return res.status(400).json({ error: 'Email is required' });
+  const { accountInput } = req.body;
+  const normalizedInput = typeof accountInput === 'string' ? accountInput.trim() : '';
+  const normalizedLookup = normalizedInput.toLowerCase();
+  const isEmailInput = normalizedLookup.includes('@');
+
+  if (!normalizedInput) return res.status(400).json({ error: 'Email or username is required' });
+  if (isEmailInput && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedLookup)) {
+    return res.status(400).json({ error: 'Invalid email address' });
+  }
 
   try {
-    const userResult = await pool.query('SELECT id FROM users WHERE email=$1', [email]);
-    // Always return success to prevent email enumeration
-    if (userResult.rows.length === 0)
-      return res.json({ message: 'If this email is registered, an OTP has been sent.' });
+    const userResult = await pool.query(
+      isEmailInput
+        ? 'SELECT email FROM users WHERE LOWER(email)=LOWER($1)'
+        : 'SELECT email FROM users WHERE LOWER(username)=LOWER($1)',
+      [normalizedLookup]
+    );
+
+    const user = userResult.rows[0];
+    if (!user) {
+      return res.status(404).json({ error: 'Invalid username or email' });
+    }
+
+    const deliveryEmail = typeof user.email === 'string' ? user.email.trim().toLowerCase() : '';
+    if (!deliveryEmail) {
+      return res.status(400).json({ error: 'No email is linked to this account' });
+    }
 
     const otp = generateOtp();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 min
 
+    await pool.query('DELETE FROM otps WHERE LOWER(email)=LOWER($1) AND used=FALSE', [deliveryEmail]);
+
     await pool.query(
       'INSERT INTO otps (email, otp_code, expires_at) VALUES ($1,$2,$3)',
-      [email, otp, expiresAt]
+      [deliveryEmail, otp, expiresAt]
     );
 
     await transporter.sendMail({
       from: `"FoodDiary" <${process.env.EMAIL_USER}>`,
-      to: email,
+      to: deliveryEmail,
       subject: 'Your FoodDiary Password Reset OTP',
       html: `
         <div style="font-family:Inter,sans-serif;max-width:480px;margin:auto;padding:24px;background:#18181b;color:#f4f4f5;border-radius:12px;">
@@ -173,7 +202,10 @@ router.post('/forgot-password', async (req, res) => {
       `,
     });
 
-    res.json({ message: 'If this email is registered, an OTP has been sent.' });
+    res.json({
+      message: 'If this account exists, an OTP has been sent.',
+      email: deliveryEmail,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -183,18 +215,24 @@ router.post('/forgot-password', async (req, res) => {
 // ─── POST /api/auth/verify-otp ───────────────────────────────────────────────
 router.post('/verify-otp', async (req, res) => {
   const { email, otp } = req.body;
-  if (!email || !otp) return res.status(400).json({ error: 'Email and OTP are required' });
+  const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
+  const normalizedOtp = typeof otp === 'string' ? otp.trim() : '';
+  if (!normalizedEmail || !normalizedOtp) return res.status(400).json({ error: 'Email and OTP are required' });
 
   try {
     const result = await pool.query(
       'SELECT * FROM otps WHERE email=$1 AND otp_code=$2 AND used=FALSE AND expires_at > NOW() ORDER BY created_at DESC LIMIT 1',
-      [email, otp]
+      [normalizedEmail, normalizedOtp]
     );
     if (result.rows.length === 0)
       return res.status(400).json({ error: 'Invalid or expired OTP' });
 
     await pool.query('UPDATE otps SET used=TRUE WHERE id=$1', [result.rows[0].id]);
-    res.json({ message: 'OTP verified', verified: true });
+    res.json({
+      message: 'OTP verified',
+      verified: true,
+      resetToken: makeResetToken(normalizedEmail),
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -203,21 +241,80 @@ router.post('/verify-otp', async (req, res) => {
 
 // ─── POST /api/auth/reset-password ──────────────────────────────────────────
 router.post('/reset-password', async (req, res) => {
-  const { email, newPassword } = req.body;
-  if (!email || !newPassword) return res.status(400).json({ error: 'Email and new password are required' });
+  const { resetToken, newPassword } = req.body;
+  if (!resetToken || !newPassword) return res.status(400).json({ error: 'Reset token and new password are required' });
   if (newPassword.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
 
   try {
+    const decoded = jwt.verify(resetToken, JWT_SECRET);
+    if (decoded.purpose !== 'password-reset' || !decoded.email) {
+      return res.status(401).json({ error: 'Invalid or expired reset token' });
+    }
+
     const hash = await bcrypt.hash(newPassword, 10);
     const result = await pool.query(
-      'UPDATE users SET password_hash=$1 WHERE email=$2 RETURNING id, username, email',
-      [hash, email]
+      'UPDATE users SET password_hash=$1 WHERE LOWER(email)=LOWER($2) RETURNING id, username, email',
+      [hash, decoded.email]
     );
     if (result.rows.length === 0)
       return res.status(404).json({ error: 'User not found' });
 
     res.json({ message: 'Password reset successfully' });
   } catch (err) {
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Invalid or expired reset token' });
+    }
+
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ─── POST /api/auth/change-password ────────────────────────────────────────
+router.post('/change-password', async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const token = authHeader.slice(7).trim();
+  const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ error: 'Current password and new password are required' });
+  }
+
+  if (newPassword.length < 6) {
+    return res.status(400).json({ error: 'Password must be at least 6 characters' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const result = await pool.query('SELECT id, password_hash FROM users WHERE id=$1', [decoded.id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const user = result.rows[0];
+    if (!user.password_hash) {
+      return res.status(400).json({ error: 'This account does not have a password set' });
+    }
+
+    const match = await bcrypt.compare(currentPassword, user.password_hash);
+    if (!match) {
+      return res.status(400).json({ error: 'Current password is incorrect' });
+    }
+
+    const hash = await bcrypt.hash(newPassword, 10);
+    await pool.query('UPDATE users SET password_hash=$1 WHERE id=$2', [hash, user.id]);
+
+    res.json({ message: 'Password updated successfully' });
+  } catch (err) {
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
     console.error(err);
     res.status(500).json({ error: 'Server error' });
   }

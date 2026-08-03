@@ -11,7 +11,10 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // ─── Email transporter ──────────────────────────────────────────────────────
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  family: 4,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,

@@ -38,14 +38,25 @@ function makeToken(user) {
   );
 }
 
+async function cleanOldOtps() {
+  try {
+    await pool.query("DELETE FROM otps WHERE created_at < NOW() - INTERVAL '3 days'");
+  } catch (err) {
+    console.error('Error cleaning old OTPs:', err);
+  }
+}
+
 void (async () => {
   try {
     await pool.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) NOT NULL DEFAULT 'user'");
     await pool.query("UPDATE users SET role='admin' WHERE username=$1", ['jiaaaminn']);
+    await cleanOldOtps();
   } catch (err) {
     console.error(err);
   }
 })();
+
+setInterval(cleanOldOtps, 60 * 60 * 1000);
 
 // ─── POST /api/auth/register ─────────────────────────────────────────────────
 router.post('/register', async (req, res) => {
@@ -181,7 +192,7 @@ router.post('/forgot-password', async (req, res) => {
     const otp = generateOtp();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 min
 
-    await pool.query('DELETE FROM otps WHERE LOWER(email)=LOWER($1) AND used=FALSE', [deliveryEmail]);
+    await pool.query("DELETE FROM otps WHERE LOWER(email)=LOWER($1) OR created_at < NOW() - INTERVAL '3 days'", [deliveryEmail]);
 
     await pool.query(
       'INSERT INTO otps (email, otp_code, expires_at) VALUES ($1,$2,$3)',

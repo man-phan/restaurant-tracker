@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 const { OAuth2Client } = require('google-auth-library');
 const pool = require('../db');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret';
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// ─── Email Sender via Brevo REST API ───────────────────────────────────────
+// ─── Email Sender via Brevo (Supports REST API & SMTP Relay) ─────────────────
 async function sendBrevoEmail({ to, subject, html }) {
   const apiKey = process.env.BREVO_API_KEY;
   const senderEmail = process.env.EMAIL_USER;
@@ -17,6 +18,27 @@ async function sendBrevoEmail({ to, subject, html }) {
     throw new Error('BREVO_API_KEY is not configured in environment variables');
   }
 
+  // Brevo SMTP Key (starts with xsmtpsib-) -> Send via Brevo SMTP Relay
+  if (apiKey.startsWith('xsmtpsib-')) {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp-relay.brevo.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: senderEmail,
+        pass: apiKey,
+      },
+    });
+
+    return await transporter.sendMail({
+      from: `"FoodDiary" <${senderEmail}>`,
+      to,
+      subject,
+      html,
+    });
+  }
+
+  // Brevo REST API Key (starts with xkeysib-) -> Send via HTTPS API
   const response = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
     headers: {

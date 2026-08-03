@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './AuthModal.css';
 
 const BASE_URL = import.meta.env.VITE_USE_LOCAL === 'true' ? import.meta.env.VITE_LOCAL_API_URL : import.meta.env.VITE_PROD_API_URL;
-const API = `${BASE_URL.replace(/\/$/, '')}/auth`;
+const API = `${(BASE_URL || '').replace(/\/$/, '')}/auth`;
 
 /* ── helpers ── */
 const post = (path, body) =>

@@ -1,5 +1,5 @@
 const USE_LOCAL = import.meta.env.VITE_USE_LOCAL === 'true';
-const BASE = USE_LOCAL ? import.meta.env.VITE_LOCAL_API_URL : import.meta.env.VITE_PROD_API_URL;
+const BASE = (USE_LOCAL ? import.meta.env.VITE_LOCAL_API_URL : import.meta.env.VITE_PROD_API_URL) || '';
 
 export const getAuthToken = () => {
   try {

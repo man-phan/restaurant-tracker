@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './AccountPage.css';
 
 const BASE_URL = import.meta.env.VITE_USE_LOCAL === 'true' ? import.meta.env.VITE_LOCAL_API_URL : import.meta.env.VITE_PROD_API_URL;
-const API = `${BASE_URL.replace(/\/$/, '')}/auth`;
+const API = `${(BASE_URL || '').replace(/\/$/, '')}/auth`;
 
 async function request(path, { method = 'GET', body, token } = {}) {
   const response = await fetch(`${API}${path}`, {

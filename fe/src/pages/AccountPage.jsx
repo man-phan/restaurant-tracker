@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import AuthModal from './AuthModal';
 import './AccountPage.css';
 
-const API = 'https://restaurant-tracker-h5hj.onrender.com/api/auth';
+const BASE_URL = import.meta.env.VITE_USE_LOCAL === 'true' ? import.meta.env.VITE_LOCAL_API_URL : import.meta.env.VITE_PROD_API_URL;
+const API = `${BASE_URL.replace(/\/$/, '')}/auth`;
 
 async function request(path, { method = 'GET', body, token } = {}) {
   const response = await fetch(`${API}${path}`, {
@@ -42,11 +44,14 @@ function getAvatarLabel(value) {
 
 export default function AccountPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [sessionUser, setSessionUser] = useState(() => readStoredUser());
   const [mode, setMode] = useState('login');
+  const [authModalView, setAuthModalView] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [warning, setWarning] = useState('');
 
   const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -59,6 +64,12 @@ export default function AccountPage() {
   const [roleDrafts, setRoleDrafts] = useState({});
   const [usersLoading, setUsersLoading] = useState(false);
   const [savingUserId, setSavingUserId] = useState(null);
+
+  const isAdmin = sessionUser?.role === 'admin';
+
+  const openAuthModal = (view) => {
+    setAuthModalView(view);
+  };
 
   const clearAuth = () => {
     // Clear both storage keys before any state updates/events to avoid stale cross-tab/session reads.
@@ -86,6 +97,11 @@ export default function AccountPage() {
   };
 
   useEffect(() => {
+    if (location.state?.warning) {
+      setWarning(location.state.warning);
+      navigate(location.pathname, { replace: true });
+    }
+
     const syncSession = async () => {
       const currentToken = localStorage.getItem('auth_token');
       const storedUser = readStoredUser();
@@ -118,7 +134,7 @@ export default function AccountPage() {
     };
 
     syncSession();
-  }, []);
+  }, [location.pathname, location.state, navigate]);
 
   useEffect(() => {
     if (sessionUser?.role === 'admin') {
@@ -131,6 +147,7 @@ export default function AccountPage() {
     setLoading(true);
     setError('');
     setMessage('');
+    setWarning('');
     try {
       const data = await request('/login', {
         method: 'POST',
@@ -157,6 +174,7 @@ export default function AccountPage() {
     setLoading(true);
     setError('');
     setMessage('');
+    setWarning('');
     try {
       const data = await request('/register', {
         method: 'POST',
@@ -224,20 +242,12 @@ export default function AccountPage() {
     }
   };
 
-  const isAdmin = sessionUser?.role === 'admin';
-
   return (
     <main className="account-page">
       <section className="account-shell">
         <section className="account-grid">
           <article className="account-panel account-auth-panel account-surface">
-            <div className="account-panel-header">
-              <span className="account-panel-kicker">Session</span>
-              <div>
-                <h2>{sessionUser ? 'Current User' : 'Guest'}</h2>
-                <p className="account-panel-subtitle">Touch-friendly sign in and registration.</p>
-              </div>
-            </div>
+            <span className="account-panel-kicker">Session</span>
 
             {sessionUser ? (
               <div className="account-session-card">
@@ -254,6 +264,10 @@ export default function AccountPage() {
                   </div>
                   <p>{sessionUser.email}</p>
                 </div>
+
+                <button className="account-primary-btn" type="button" onClick={() => navigate('/change-password')}>
+                  Change password
+                </button>
 
                 <button className="account-secondary-btn" type="button" onClick={handleLogout}>
                   Logout
@@ -274,6 +288,8 @@ export default function AccountPage() {
                 </div>
               </div>
             )}
+
+            {!sessionUser && warning && <div className="account-warning">{warning}</div>}
 
             {!sessionUser && (
               <>
@@ -297,6 +313,9 @@ export default function AccountPage() {
                 </div>
 
                 <form className="account-form" onSubmit={mode === 'login' ? handleLogin : handleRegister}>
+                  {error && <div className="account-message error">{error}</div>}
+                  {message && <div className="account-message success">{message}</div>}
+
                   {mode === 'login' ? (
                     <>
                       <label>
@@ -307,6 +326,13 @@ export default function AccountPage() {
                         Password
                         <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} autoComplete="current-password" required />
                       </label>
+                      <button
+                        type="button"
+                        className="auth-forgot-link"
+                        onClick={() => openAuthModal('forgot-email')}
+                      >
+                        Forgot password?
+                      </button>
                     </>
                   ) : (
                     <>
@@ -329,9 +355,6 @@ export default function AccountPage() {
                     </>
                   )}
 
-                  {error && <div className="account-message error">{error}</div>}
-                  {message && <div className="account-message success">{message}</div>}
-
                   <button className="account-primary-btn" type="submit" disabled={loading}>
                     {loading ? 'Please wait…' : mode === 'login' ? 'Login' : 'Create account'}
                   </button>
@@ -342,13 +365,9 @@ export default function AccountPage() {
 
           {isAdmin && (
             <article className="account-panel account-admin-panel account-surface">
-              <div className="account-panel-header">
-                <span className="account-panel-kicker">Control</span>
-                <div>
-                  <h2>Manage Users</h2>
-                  <p className="account-panel-subtitle">Responsive role controls with larger tap targets.</p>
-                </div>
-              </div>
+              <span className="account-panel-kicker">Control</span>
+              <h2>Manage Users</h2>
+              <p className="account-panel-subtitle">Responsive role controls with larger tap targets.</p>
 
               {sessionUser?.role === 'admin' && (
                 <div className="account-warning">
@@ -417,6 +436,18 @@ export default function AccountPage() {
             </article>
           )}
         </section>
+
+        {authModalView && (
+          <AuthModal
+            initialView={authModalView}
+            onClose={() => setAuthModalView(null)}
+            onAuth={(user) => {
+              setSessionUser(user);
+              emitAuthChanged();
+              setAuthModalView(null);
+            }}
+          />
+        )}
       </section>
     </main>
   );

@@ -9,6 +9,7 @@ const DistrictBrowserPage = lazy(() => import('./pages/DistrictBrowserPage'));
 const DistrictDetailPage = lazy(() => import('./pages/DistrictDetailPage'));
 const RestaurantDetailPage = lazy(() => import('./pages/RestaurantDetailPage'));
 const AccountPage = lazy(() => import('./pages/AccountPage'));
+const ChangePasswordPage = lazy(() => import('./pages/ChangePasswordPage'));
 
 const Router = () => (
   <Suspense fallback={<LoadingSpinner fullPage />}>
@@ -20,6 +21,7 @@ const Router = () => (
         <Route path="/districts/:id" element={<DistrictDetailPage />} />
         <Route path="/restaurants/:id" element={<RestaurantDetailPage />} />
         <Route path="/profile" element={<AccountPage />} />
+        <Route path="/change-password" element={<ChangePasswordPage />} />
       </Route>
     </Routes>
   </Suspense>

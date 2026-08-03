@@ -13,6 +13,7 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 async function sendBrevoEmail({ to, subject, html }) {
   const apiKey = process.env.BREVO_API_KEY;
   const senderEmail = process.env.EMAIL_USER;
+  const brevoLogin = process.env.BREVO_LOGIN;
 
   if (!apiKey) {
     throw new Error('BREVO_API_KEY is not configured in environment variables');
@@ -25,7 +26,7 @@ async function sendBrevoEmail({ to, subject, html }) {
       port: 587,
       secure: false,
       auth: {
-        user: senderEmail,
+        user: brevoLogin || senderEmail,  // Brevo SMTP requires Brevo login, not Gmail
         pass: apiKey,
       },
     });

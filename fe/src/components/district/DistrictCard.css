@@ -10,10 +10,12 @@
   transition: all 0.2s ease;
 }
 
-.district-card:hover {
-  border-color: var(--accent-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px var(--shadow-elevated);
+@media (hover: hover) and (pointer: fine) {
+  .district-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px var(--shadow-elevated);
+  }
 }
 
 .dc-icon { font-size: 1.5rem; }

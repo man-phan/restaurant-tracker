@@ -83,9 +83,11 @@
   min-height: 44px;
 }
 
-.bs-close:hover {
-  background: var(--bg-hover-strong);
-  color: var(--text-primary);
+@media (hover: hover) and (pointer: fine) {
+  .bs-close:hover {
+    background: var(--bg-hover-strong);
+    color: var(--text-primary);
+  }
 }
 
 .bs-body {

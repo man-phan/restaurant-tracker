@@ -6,11 +6,6 @@
   transition: all 0.2s ease;
 }
 
-.dish-card:hover {
-  border-color: var(--accent-primary);
-  background: var(--bg-hover-strong);
-}
-
 .dc2-header {
   display: flex;
   align-items: center;
@@ -52,12 +47,19 @@
   min-height: 34px;
 }
 
-.dc2-btn:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-}
+@media (hover: hover) and (pointer: fine) {
+  .dish-card:hover {
+    border-color: var(--accent-primary);
+    background: var(--bg-hover-strong);
+  }
 
-.dc2-btn--danger:hover {
-  border-color: #ef4444;
-  color: #ef4444;
+  .dc2-btn:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+
+  .dc2-btn--danger:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
 }

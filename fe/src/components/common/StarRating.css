@@ -27,11 +27,17 @@
   justify-content: center;
 }
 
-.star.interactive:hover,
 .star.interactive:focus {
   color: #f59e0b;
   transform: scale(1.2);
   outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .star.interactive:hover {
+    color: #f59e0b;
+    transform: scale(1.2);
+  }
 }
 
 .star-rating--sm .star { font-size: 0.85rem; }

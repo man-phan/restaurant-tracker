@@ -37,11 +37,6 @@
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.sr-empty-btn:hover {
-  opacity: 0.92;
-  transform: translateY(-1px);
-}
-
 .sr-empty-btn--secondary {
   background: var(--bg-hover);
   border: 1px solid var(--border-color);
@@ -101,11 +96,6 @@
   align-items: center;
 }
 
-.sr-district-link:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-}
-
 /* Dish grouped results */
 .sr-district-group {
   margin-bottom: 1.25rem;
@@ -136,8 +126,6 @@
   text-decoration: none;
   margin-bottom: 0.5rem;
 }
-
-.sr-restaurant-name:hover { text-decoration: underline; }
 
 .sr-dish-list {
   display: flex;
@@ -170,4 +158,18 @@
   .sr-empty-actions {
     flex-direction: column;
   }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sr-empty-btn:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+  }
+
+  .sr-district-link:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+
+  .sr-restaurant-name:hover { text-decoration: underline; }
 }

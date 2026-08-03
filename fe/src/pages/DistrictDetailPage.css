@@ -19,8 +19,6 @@
   width: fit-content;
 }
 
-.dd-back:hover { color: var(--accent-primary); }
-
 .dd-title-row {
   display: flex;
   align-items: baseline;
@@ -94,25 +92,10 @@
   min-height: 38px;
 }
 
-.dd-action-btn:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-}
-
 .dd-action-btn--primary {
   background: var(--gradient-brand);
   color: #fff;
   border: none;
-}
-
-.dd-action-btn--primary:hover {
-  color: #fff;
-  opacity: 0.92;
-}
-
-.dd-action-btn--danger:hover {
-  border-color: #ef4444;
-  color: #ef4444;
 }
 
 .restaurant-list {
@@ -136,8 +119,27 @@
   min-height: 52px;
 }
 
-.dd-add-btn:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-  background: var(--accent-glow);
+@media (hover: hover) and (pointer: fine) {
+  .dd-back:hover { color: var(--accent-primary); }
+
+  .dd-action-btn:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+
+  .dd-action-btn--primary:hover {
+    color: #fff;
+    opacity: 0.92;
+  }
+
+  .dd-action-btn--danger:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+
+  .dd-add-btn:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    background: var(--accent-glow);
+  }
 }

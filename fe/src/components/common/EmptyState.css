@@ -46,8 +46,10 @@
   transition: all 0.2s ease;
 }
 
-.empty-action-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 15px var(--shadow-brand);
+@media (hover: hover) and (pointer: fine) {
+  .empty-action-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px var(--shadow-brand);
+  }
 }

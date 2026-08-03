@@ -23,14 +23,6 @@
   border-radius: 3px 0 0 3px;
 }
 
-.restaurant-card:hover {
-  border-color: var(--accent-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px var(--shadow-elevated);
-}
-
-.restaurant-card:hover::before { transform: scaleY(1); }
-
 .rc-header {
   display: flex;
   gap: 0.75rem;
@@ -58,6 +50,16 @@
   padding: 2px 8px;
   border-radius: 20px;
   margin-bottom: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .restaurant-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px var(--shadow-elevated);
+  }
+
+  .restaurant-card:hover::before { transform: scaleY(1); }
 }
 
 .rc-address {

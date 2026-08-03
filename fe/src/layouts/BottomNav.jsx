@@ -9,6 +9,16 @@ const BottomNav = () => {
     try { return JSON.parse(localStorage.getItem('auth_user')); } catch { return null; }
   });
   const navigate = useNavigate();
+  const guestWarning = 'Please sign in to add a restaurant.';
+
+  const handleAddClick = () => {
+    if (!user) {
+      navigate('/profile', { state: { warning: guestWarning } });
+      return;
+    }
+
+    setShowAdd(true);
+  };
 
   React.useEffect(() => {
     const syncUser = () => {
@@ -41,7 +51,7 @@ const BottomNav = () => {
         <button
           id="btn-add-restaurant-mobile"
           className="bottom-nav-fab"
-          onClick={() => setShowAdd(true)}
+          onClick={handleAddClick}
           aria-label="Add restaurant"
         >
           <span className="fab-icon">+</span>

@@ -35,8 +35,6 @@
   padding: 0.25rem 0;
 }
 
-.rd-back:hover { color: var(--accent-primary); }
-
 .rd-icon { font-size: 3rem; margin-bottom: 0.75rem; }
 
 .rd-name {
@@ -135,8 +133,12 @@
   min-height: 52px;
 }
 
-.rd-add-dish-btn:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-  background: var(--accent-glow);
+@media (hover: hover) and (pointer: fine) {
+  .rd-back:hover { color: var(--accent-primary); }
+
+  .rd-add-dish-btn:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    background: var(--accent-glow);
+  }
 }

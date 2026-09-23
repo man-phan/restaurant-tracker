@@ -16,7 +16,10 @@ app.use('/api/restaurants', require('./routes/restaurants'));
 app.use('/api/dishes', require('./routes/dishes'));
 app.use('/api/search', require('./routes/search'));
 
-// Health check
+// Health check (public, no JWT)
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
 // 404

@@ -85,9 +85,20 @@ const RestaurantDetailPage = () => {
           </div>
         </div>
         <div className="rd-icon">🍜</div>
-        <h1 className="rd-name">{restaurant.name}</h1>
-        <p className="rd-address">📍 {restaurant.fullAddress || restaurant.address}</p>
+        <h1 className="rd-name">
+          {restaurant.name}
+          {restaurant.isCharity && (
+            <span className="rd-charity" role="img" aria-label="Charity" title="Charity">🎗️</span>
+          )}
+        </h1>
+        {(restaurant.fullAddress || restaurant.address) && (
+          <p className="rd-address">📍 {restaurant.fullAddress || restaurant.address}</p>
+        )}
+        {restaurant.openingHours && (
+          <p className="rd-hours">🕒 {restaurant.openingHours}</p>
+        )}
         {district && <span className="rd-district-badge">{district.name}</span>}
+        {restaurant.note && <p className="rd-note">📝 {restaurant.note}</p>}
         {avgRating && (
           <div className="rd-avg-rating">
             <span className="rd-avg-star">★</span>

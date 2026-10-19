@@ -34,18 +34,18 @@ const HomePage = () => {
           <span className="qnav-icon">🔍</span>
           <span className="qnav-label">Search Dishes</span>
         </button>
-        <button className="qnav-card" onClick={() => setShowAdd(true)}>
-          <span className="qnav-icon">➕</span>
-          <span className="qnav-label">Add Restaurant</span>
+        <button className="qnav-card" onClick={() => navigate('/restaurants?charity=true')}>
+          <span className="qnav-icon">🎗️</span>
+          <span className="qnav-label">Charity</span>
         </button>
       </section>
 
       {/* Stats */}
       <section className="home-stats">
-        <div className="stat-card">
+        <button type="button" className="stat-card stat-card--link" onClick={() => navigate('/restaurants')}>
           <span className="stat-num">{restaurants.length}</span>
           <span className="stat-label">Restaurants</span>
-        </div>
+        </button>
         <div className="stat-card">
           <span className="stat-num">{dishes.length}</span>
           <span className="stat-label">Dishes Tried</span>

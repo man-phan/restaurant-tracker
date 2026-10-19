@@ -7,6 +7,9 @@ const normalizeRestaurant = (r) => ({
   districtId: r.location_id ?? r.locationId ?? null,
   fullAddress: r.full_address ?? r.fullAddress ?? null,
   createdAt: r.created_at ?? r.createdAt ?? null,
+  openingHours: r.opening_hours ?? r.openingHours ?? null,
+  note: r.note ?? null,
+  isCharity: Boolean(r.is_charity ?? r.isCharity),
 });
 
 // ── Restaurants ────────────────────────────────────────────
@@ -39,10 +42,10 @@ export const getRecentRestaurants = (limit = 5) =>
     : apiRequest(`/restaurants/recent?limit=${limit}`)
         .then((list) => list.map(normalizeRestaurant)));
 
-export const addRestaurant = ({ name, address, fullAddress, locationId = null }) =>
+export const addRestaurant = ({ name, address, fullAddress, locationId = null, openingHours = null, note = null, isCharity = false }) =>
   apiRequest('/restaurants', {
     method: 'POST',
-    body: { name, address, fullAddress, locationId },
+    body: { name, address, fullAddress, locationId, openingHours, note, isCharity },
   }).then(normalizeRestaurant);
 
 export const updateRestaurant = (id, data) =>

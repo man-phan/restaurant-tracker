@@ -5,11 +5,21 @@ import './RestaurantCard.css';
 const RestaurantCard = ({ restaurant, dishes = [], district = null }) => (
   <Link to={`/restaurants/${restaurant.id}`} className="restaurant-card" id={`restaurant-card-${restaurant.id}`}>
     <div className="rc-header">
-      <div className="rc-icon">🍜</div>
+      <div className="rc-icon">{restaurant.isCharity ? '🎗️' : '🍜'}</div>
       <div className="rc-info">
-        <h3 className="rc-name">{restaurant.name}</h3>
+        <h3 className="rc-name">
+          {restaurant.name}
+          {restaurant.isCharity && (
+            <span className="rc-charity" role="img" aria-label="Charity" title="Charity">🎗️</span>
+          )}
+        </h3>
         {district && <span className="rc-district-badge">{district.name}</span>}
-        <p className="rc-address">📍 {restaurant.fullAddress || restaurant.address}</p>
+        {(restaurant.fullAddress || restaurant.address) && (
+          <p className="rc-address">📍 {restaurant.fullAddress || restaurant.address}</p>
+        )}
+        {restaurant.openingHours && (
+          <p className="rc-hours">🕒 {restaurant.openingHours}</p>
+        )}
       </div>
     </div>
     {dishes.length > 0 && (

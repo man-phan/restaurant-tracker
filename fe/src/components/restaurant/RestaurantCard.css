@@ -69,6 +69,18 @@
   line-height: 1.4;
 }
 
+.rc-hours {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 2px 0 0;
+  line-height: 1.4;
+}
+
+.rc-charity {
+  margin-left: 0.4rem;
+  font-size: 0.95rem;
+}
+
 .rc-dishes {
   display: flex;
   flex-wrap: wrap;

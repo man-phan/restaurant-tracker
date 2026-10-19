@@ -46,6 +46,48 @@
   font-weight: 500;
 }
 
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.4;
+}
+
+.charity-toggle {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-color);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 44px;
+}
+
+.charity-toggle-icon {
+  font-size: 1.25rem;
+  filter: grayscale(1);
+  opacity: 0.6;
+  transition: all 0.2s;
+}
+
+.charity-toggle--active {
+  color: #db2777;
+  border-color: #ec4899;
+  background: rgba(236, 72, 153, 0.12);
+}
+
+.charity-toggle--active .charity-toggle-icon {
+  filter: none;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
 .form-actions {
   display: flex;
   gap: 0.75rem;

@@ -7,6 +7,7 @@ const HomePage = lazy(() => import('./pages/HomePage'));
 const SearchResultsPage = lazy(() => import('./pages/SearchResultsPage'));
 const DistrictBrowserPage = lazy(() => import('./pages/DistrictBrowserPage'));
 const DistrictDetailPage = lazy(() => import('./pages/DistrictDetailPage'));
+const RestaurantsPage = lazy(() => import('./pages/RestaurantsPage'));
 const RestaurantDetailPage = lazy(() => import('./pages/RestaurantDetailPage'));
 const AccountPage = lazy(() => import('./pages/AccountPage'));
 const ChangePasswordPage = lazy(() => import('./pages/ChangePasswordPage'));
@@ -19,6 +20,7 @@ const Router = () => (
         <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/districts" element={<DistrictBrowserPage />} />
         <Route path="/districts/:id" element={<DistrictDetailPage />} />
+        <Route path="/restaurants" element={<RestaurantsPage />} />
         <Route path="/restaurants/:id" element={<RestaurantDetailPage />} />
         <Route path="/profile" element={<AccountPage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />

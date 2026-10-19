@@ -42,6 +42,9 @@ CREATE TABLE restaurants (
   address      VARCHAR(300),
   full_address VARCHAR(500),
   location_id  INTEGER REFERENCES locations(id) ON DELETE CASCADE,
+  opening_hours VARCHAR(100) NULL,
+  note         TEXT NULL,
+  is_charity   BOOLEAN NOT NULL DEFAULT FALSE,
   created_at   DATE NOT NULL DEFAULT CURRENT_DATE
 );
 

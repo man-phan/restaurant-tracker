@@ -66,7 +66,7 @@ router.get('/:id', async (req, res) => {
 
 // POST /api/restaurants
 router.post('/', async (req, res) => {
-  const { name, address, fullAddress, locationId = null } = req.body;
+  const { name, address, fullAddress, locationId = null, openingHours, note, isCharity } = req.body;
   if (!name || !name.trim()) return res.status(400).json({ error: 'Name is required' });
   try {
     const ownsLocation = await assertLocationOwnership(locationId, req.user.id);
@@ -75,9 +75,18 @@ router.post('/', async (req, res) => {
     }
 
     const { rows } = await pool.query(
-      `INSERT INTO restaurants (user_id, name, address, full_address, location_id)
-       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [req.user.id, name.trim(), address || null, fullAddress || null, ownsLocation === null ? null : locationId]
+      `INSERT INTO restaurants (user_id, name, address, full_address, location_id, opening_hours, note, is_charity)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+      [
+        req.user.id,
+        name.trim(),
+        (address && address.trim()) || null,
+        fullAddress || null,
+        ownsLocation === null ? null : locationId,
+        (openingHours && String(openingHours).trim()) || null,
+        (note && String(note).trim()) || null,
+        Boolean(isCharity),
+      ]
     );
     res.status(201).json(rows[0]);
   } catch (err) {
@@ -87,7 +96,7 @@ router.post('/', async (req, res) => {
 
 // PUT /api/restaurants/:id
 router.put('/:id', async (req, res) => {
-  const { name, address, fullAddress, locationId = null } = req.body;
+  const { name, address, fullAddress, locationId = null, openingHours, note, isCharity } = req.body;
   if (!name || !name.trim()) return res.status(400).json({ error: 'Name is required' });
   try {
     const ownsLocation = await assertLocationOwnership(locationId, req.user.id);
@@ -97,9 +106,20 @@ router.put('/:id', async (req, res) => {
 
     const { rows } = await pool.query(
       `UPDATE restaurants
-       SET name = $1, address = $2, full_address = $3, location_id = $4
-       WHERE id = $5 AND user_id = $6 RETURNING *`,
-      [name.trim(), address || null, fullAddress || null, ownsLocation === null ? null : locationId, req.params.id, req.user.id]
+       SET name = $1, address = $2, full_address = $3, location_id = $4,
+           opening_hours = $5, note = $6, is_charity = $7
+       WHERE id = $8 AND user_id = $9 RETURNING *`,
+      [
+        name.trim(),
+        (address && address.trim()) || null,
+        fullAddress || null,
+        ownsLocation === null ? null : locationId,
+        (openingHours && String(openingHours).trim()) || null,
+        (note && String(note).trim()) || null,
+        Boolean(isCharity),
+        req.params.id,
+        req.user.id,
+      ]
     );
     if (!rows.length) return res.status(404).json({ error: 'Restaurant not found' });
     res.json(rows[0]);

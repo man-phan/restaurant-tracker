@@ -73,7 +73,19 @@
   text-align: center;
 }
 
+.stat-card--link {
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
 @media (hover: hover) and (pointer: fine) {
+  .stat-card--link:hover {
+    border-color: var(--accent-primary);
+    background: var(--accent-glow);
+    transform: translateY(-2px);
+  }
+
   .qnav-card:hover {
     border-color: var(--accent-primary);
     background: var(--accent-glow);

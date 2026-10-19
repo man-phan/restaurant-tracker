@@ -53,6 +53,28 @@
   line-height: 1.5;
 }
 
+.rd-hours {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+
+.rd-charity {
+  margin-left: 0.5rem;
+  font-size: 1.3rem;
+  vertical-align: middle;
+}
+
+.rd-note {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0.25rem 0 0.75rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 .rd-district-badge {
   display: inline-block;
   font-size: 0.75rem;

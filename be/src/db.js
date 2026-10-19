@@ -3,8 +3,8 @@ require('dotenv').config();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: (process.env.NODE_ENV === 'production' || (process.env.DATABASE_URL && !process.env.DATABASE_URL.includes('localhost'))) 
-    ? { rejectUnauthorized: false } 
+  ssl: (process.env.NODE_ENV === 'production' || (process.env.DATABASE_URL && !process.env.DATABASE_URL.includes('localhost')))
+    ? { rejectUnauthorized: false }
     : false,
 });
 
@@ -20,6 +20,9 @@ async function runAutoMigrations() {
       ALTER TABLE locations ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id) ON DELETE CASCADE;
       ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id) ON DELETE CASCADE;
       ALTER TABLE dishes ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id) ON DELETE CASCADE;
+      ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS opening_hours VARCHAR(100) NULL;
+      ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS note TEXT NULL;
+      ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS is_charity BOOLEAN NOT NULL DEFAULT FALSE;
     `);
     console.log('✅ Auto migrations checked/applied: user_id columns ensured');
   } catch (err) {

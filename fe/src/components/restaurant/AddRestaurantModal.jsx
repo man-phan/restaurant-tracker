@@ -7,7 +7,7 @@ import './AddRestaurantModal.css';
 const AddRestaurantModal = ({ restaurant = null, onClose, onSuccess }) => {
   const { addRestaurant, updateRestaurant, districts } = useApp();
   const isEditing = Boolean(restaurant);
-  
+
   const initialLocation = restaurant?.districtId || restaurant?.locationId
     ? districts.find((d) => d.id == (restaurant.districtId || restaurant.locationId)) || null
     : null;
@@ -16,6 +16,9 @@ const AddRestaurantModal = ({ restaurant = null, onClose, onSuccess }) => {
     name: restaurant?.name || '',
     address: restaurant?.address || '',
     location: initialLocation,
+    openingHours: restaurant?.openingHours || '',
+    note: restaurant?.note || '',
+    isCharity: Boolean(restaurant?.isCharity),
   });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -23,7 +26,6 @@ const AddRestaurantModal = ({ restaurant = null, onClose, onSuccess }) => {
   const validate = () => {
     const e = {};
     if (!form.name.trim()) e.name = 'Restaurant name is required';
-    if (!form.address.trim()) e.address = 'Address is required';
     if (!form.location) e.location = 'Location is required';
     return e;
   };
@@ -35,14 +37,18 @@ const AddRestaurantModal = ({ restaurant = null, onClose, onSuccess }) => {
     setSubmitting(true);
     try {
       const locationName = form.location?.name;
-      const fullAddress = locationName
-        ? `${form.address.trim()}, ${locationName}, Ho Chi Minh City`
-        : form.address.trim();
+      const trimmedAddress = form.address.trim();
+      const fullAddress = trimmedAddress
+        ? (locationName ? `${trimmedAddress}, ${locationName}, Ho Chi Minh City` : trimmedAddress)
+        : (locationName ? `${locationName}, Ho Chi Minh City` : null);
       const payload = {
         name: form.name.trim(),
-        address: form.address.trim(),
+        address: trimmedAddress || null,
         fullAddress,
         locationId: form.location?.id ?? null,
+        openingHours: form.openingHours.trim() || null,
+        note: form.note.trim() || null,
+        isCharity: form.isCharity,
       };
 
       if (isEditing) {
@@ -77,7 +83,7 @@ const AddRestaurantModal = ({ restaurant = null, onClose, onSuccess }) => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="restaurant-address-input" className="form-label">Detailed address *</label>
+          <label htmlFor="restaurant-address-input" className="form-label">Detailed address</label>
           <input
             id="restaurant-address-input"
             type="text"
@@ -93,6 +99,46 @@ const AddRestaurantModal = ({ restaurant = null, onClose, onSuccess }) => {
           <label className="form-label">Location *</label>
           <DistrictSelector value={form.location} onChange={set('location')} />
           {errors.location && <span className="field-error">{errors.location}</span>}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="restaurant-hours-input" className="form-label">Opening hours</label>
+          <input
+            id="restaurant-hours-input"
+            type="text"
+            className="form-input"
+            placeholder="e.g. 07:00 - 22:00"
+            maxLength={100}
+            value={form.openingHours}
+            onChange={(e) => set('openingHours')(e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="restaurant-note-input" className="form-label">Note</label>
+          <textarea
+            id="restaurant-note-input"
+            className="form-input form-textarea"
+            placeholder="Anything worth remembering…"
+            rows={3}
+            value={form.note}
+            onChange={(e) => set('note')(e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <button
+            id="restaurant-charity-toggle"
+            type="button"
+            className={`charity-toggle${form.isCharity ? ' charity-toggle--active' : ''}`}
+            aria-pressed={form.isCharity}
+            aria-label="Mark as charity restaurant"
+            title="Mark as charity restaurant"
+            onClick={() => set('isCharity')(!form.isCharity)}
+          >
+            <span className="charity-toggle-icon">🎗️</span>
+            <span className="charity-toggle-text">{form.isCharity ? 'Charity' : 'Mark as charity'}</span>
+          </button>
         </div>
 
         <div className="form-actions">

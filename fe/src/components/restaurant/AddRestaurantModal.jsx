@@ -39,8 +39,10 @@ const AddRestaurantModal = ({ restaurant = null, onClose, onSuccess }) => {
       const locationName = form.location?.name;
       const trimmedAddress = form.address.trim();
       const fullAddress = trimmedAddress
-        ? (locationName ? `${trimmedAddress}, ${locationName}, Ho Chi Minh City` : trimmedAddress)
-        : (locationName ? `${locationName}, Ho Chi Minh City` : null);
+        ? (locationName && !trimmedAddress.toLowerCase().includes(locationName.toLowerCase())
+            ? `${trimmedAddress}, ${locationName}`
+            : trimmedAddress)
+        : (locationName || null);
       const payload = {
         name: form.name.trim(),
         address: trimmedAddress || null,
@@ -88,7 +90,7 @@ const AddRestaurantModal = ({ restaurant = null, onClose, onSuccess }) => {
             id="restaurant-address-input"
             type="text"
             className={`form-input${errors.address ? ' input-error' : ''}`}
-            placeholder="e.g. 123 Nguyen Trai, Ward 2"
+            placeholder="e.g. 123 Nguyen Trai, Ward 2, Ho Chi Minh City"
             value={form.address}
             onChange={(e) => set('address')(e.target.value)}
           />

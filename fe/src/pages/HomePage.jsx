@@ -50,10 +50,10 @@ const HomePage = () => {
           <span className="stat-num">{dishes.length}</span>
           <span className="stat-label">Dishes Tried</span>
         </div>
-        <div className="stat-card">
+        <button type="button" className="stat-card stat-card--link" onClick={() => navigate('/districts')}>
           <span className="stat-num">{districts.length}</span>
           <span className="stat-label">Districts</span>
-        </div>
+        </button>
       </section>
 
       {/* Recent restaurants */}

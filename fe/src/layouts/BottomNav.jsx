@@ -43,9 +43,9 @@ const BottomNav = () => {
           <span className="bnav-icon">🏠</span>
           <span className="bnav-label">Home</span>
         </NavLink>
-        <NavLink to="/search" className={({ isActive }) => `bottom-nav-item${isActive ? ' active' : ''}`}>
-          <span className="bnav-icon">🔍</span>
-          <span className="bnav-label">Search</span>
+        <NavLink to="/restaurants" className={({ isActive }) => `bottom-nav-item${isActive ? ' active' : ''}`}>
+          <span className="bnav-icon">🍽️</span>
+          <span className="bnav-label">Restaurants</span>
         </NavLink>
 
         <button
@@ -59,7 +59,7 @@ const BottomNav = () => {
 
         <NavLink to="/districts" className={({ isActive }) => `bottom-nav-item${isActive ? ' active' : ''}`}>
           <span className="bnav-icon">📍</span>
-          <span className="bnav-label">Districts</span>
+          <span className="bnav-label">Locations</span>
         </NavLink>
 
         {/* User / Login */}

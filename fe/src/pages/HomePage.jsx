@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import SearchBar from '../components/common/SearchBar';
 import RestaurantCard from '../components/restaurant/RestaurantCard';
 import AddRestaurantModal from '../components/restaurant/AddRestaurantModal';
 import EmptyState from '../components/common/EmptyState';
@@ -24,21 +25,9 @@ const HomePage = () => {
   return (
     <div className="home-page">
 
-      {/* Quick nav */}
-      <section className="home-quicknav">
-        <button className="qnav-card" onClick={() => navigate('/districts')}>
-          <span className="qnav-icon">📍</span>
-          <span className="qnav-label">Browse by District</span>
-        </button>
-        <button className="qnav-card" onClick={() => navigate('/search')}>
-          <span className="qnav-icon">🔍</span>
-          <span className="qnav-label">Search Dishes</span>
-        </button>
-        <button className="qnav-card" onClick={() => navigate('/restaurants?charity=true')}>
-          <span className="qnav-icon">🎗️</span>
-          <span className="qnav-label">Charity</span>
-        </button>
-      </section>
+      <div className="home-search-wrapper">
+        <SearchBar placeholder="Search restaurants, dishes, locations…" />
+      </div>
 
       {/* Stats */}
       <section className="home-stats">
@@ -46,13 +35,13 @@ const HomePage = () => {
           <span className="stat-num">{restaurants.length}</span>
           <span className="stat-label">Restaurants</span>
         </button>
-        <div className="stat-card">
-          <span className="stat-num">{dishes.length}</span>
-          <span className="stat-label">Dishes Tried</span>
-        </div>
+        <button type="button" className="stat-card stat-card--link" onClick={() => navigate('/restaurants?charity=true')}>
+          <span className="stat-num">{restaurants.filter((r) => r.isCharity).length}</span>
+          <span className="stat-label">Charity</span>
+        </button>
         <button type="button" className="stat-card stat-card--link" onClick={() => navigate('/districts')}>
           <span className="stat-num">{districts.length}</span>
-          <span className="stat-label">Districts</span>
+          <span className="stat-label">Locations</span>
         </button>
       </section>
 

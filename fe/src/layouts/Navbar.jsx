@@ -45,8 +45,8 @@ const Navbar = () => {
         </Link>
         <nav className="navbar-links">
           <Link to="/" className="nav-link">Home</Link>
-          <Link to="/search" className="nav-link">Search</Link>
-          <Link to="/districts" className="nav-link">Districts</Link>
+          <Link to="/restaurants" className="nav-link">Restaurants</Link>
+          <Link to="/districts" className="nav-link">Locations</Link>
         </nav>
         <button className="btn-add-primary" onClick={handleAddClick}>
           + Add Restaurant

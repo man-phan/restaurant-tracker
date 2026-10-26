@@ -441,6 +441,12 @@ export default function AccountPage() {
           <AuthModal
             initialView={authModalView}
             onClose={() => setAuthModalView(null)}
+            onResetSuccess={() => {
+              setAuthModalView(null);
+              setMode('login');
+              setError('');
+              setMessage('Password reset successfully! Please log in.');
+            }}
             onAuth={(user) => {
               setSessionUser(user);
               emitAuthChanged();

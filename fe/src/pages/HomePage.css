@@ -5,6 +5,8 @@
 }
 
 
+.home-search-wrapper { margin-top: 1rem; margin-bottom: 1.5rem; }
+
 /* Quick Nav */
 .home-quicknav {
   display: grid;

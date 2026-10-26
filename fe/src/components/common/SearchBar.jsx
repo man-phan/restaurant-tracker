@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SearchBar.css';
 
-const SearchBar = ({ initialValue = '', placeholder = 'Search restaurants, dishes, districts…', autoFocus = false }) => {
+const SearchBar = ({ initialValue = '', placeholder = 'Search restaurants, dishes, locations…', autoFocus = false }) => {
   const [query, setQuery] = useState(initialValue);
   const navigate = useNavigate();
 
@@ -46,7 +46,7 @@ const SearchBar = ({ initialValue = '', placeholder = 'Search restaurants, dishe
         placeholder={placeholder}
         autoFocus={autoFocus}
         autoComplete="off"
-        aria-label="Search restaurants, dishes, or districts"
+        aria-label="Search restaurants, dishes, or locations"
       />
       {query && (
         <button type="button" className="sb-clear" onClick={handleClear} aria-label="Clear search">✕</button>

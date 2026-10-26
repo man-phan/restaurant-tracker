@@ -17,7 +17,7 @@ const post = (path, body) =>
   });
 
 /* ─────────────────────────────────────────────────────────────── */
-export default function AuthModal({ onClose, onAuth, initialView = 'login' }) {
+export default function AuthModal({ onClose, onAuth, onResetSuccess, initialView = 'login' }) {
   // views: 'login' | 'register' | 'forgot-email' | 'otp' | 'reset'
   const [view, setView] = useState(initialView);
   const [loading, setLoading] = useState(false);
@@ -86,7 +86,10 @@ export default function AuthModal({ onClose, onAuth, initialView = 'login' }) {
         if (!resetToken) throw new Error('Please verify the OTP again.');
         await post('/reset-password', { resetToken, newPassword });
         setSuccess('Password reset! You can now log in.');
-        setTimeout(() => switchView('login'), 1500);
+        setTimeout(() => {
+          if (onResetSuccess) onResetSuccess();
+          else onClose();
+        }, 1500);
       }
     } catch (err) {
       setError(err.message);
@@ -329,7 +332,7 @@ export default function AuthModal({ onClose, onAuth, initialView = 'login' }) {
 
             {/* Back links */}
             {(view === 'forgot-email' || view === 'otp' || view === 'reset') && (
-              <button type="button" className="auth-back-link" onClick={() => switchView('login')}>
+              <button type="button" className="auth-back-link" onClick={onClose}>
                 ← Back to Login
               </button>
             )}

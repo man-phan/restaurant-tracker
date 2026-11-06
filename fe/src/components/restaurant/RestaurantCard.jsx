@@ -20,6 +20,9 @@ const RestaurantCard = ({ restaurant, dishes = [], district = null }) => (
         {restaurant.openingHours && (
           <p className="rc-hours">🕒 {restaurant.openingHours}</p>
         )}
+        {(restaurant.note || restaurant.description) && (
+          <p className="rc-description">{restaurant.note || restaurant.description}</p>
+        )}
       </div>
     </div>
     {dishes.length > 0 && (

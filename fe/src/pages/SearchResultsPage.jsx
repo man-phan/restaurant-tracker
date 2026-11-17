@@ -140,7 +140,7 @@ const SearchResultsPage = () => {
                     {rDishes.map((d) => (
                       <span key={d.id} className="sr-dish-item">
                         {d.name}
-                        <span className="sr-dish-rating">{'★'.repeat(d.rating)}</span>
+                        <span className="sr-dish-rating">{d.rating ? '★'.repeat(d.rating) : ''}</span>
                       </span>
                     ))}
                   </div>

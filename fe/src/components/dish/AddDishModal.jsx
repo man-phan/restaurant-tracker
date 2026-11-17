@@ -20,7 +20,6 @@ const AddDishModal = ({ restaurantId, dish = null, initialName = '', onClose, on
   const validate = () => {
     const e = {};
     if (!form.name.trim()) e.name = 'Dish name is required';
-    if (!form.rating) e.rating = 'Please select a rating';
     if (!restaurantId && !selectedResId) e.restaurantId = 'Please select a restaurant';
     return e;
   };
@@ -32,7 +31,7 @@ const AddDishModal = ({ restaurantId, dish = null, initialName = '', onClose, on
     setSubmitting(true);
     try {
       const targetRestaurantId = restaurantId || selectedResId;
-      const payload = { restaurantId: targetRestaurantId, name: form.name.trim(), rating: form.rating, note: form.note.trim() };
+      const payload = { restaurantId: targetRestaurantId, name: form.name.trim(), rating: form.rating || null, note: form.note.trim() };
       if (isEditing) {
         const updatedDish = await updateDish(dish.id, payload);
         onSuccess(updatedDish);
@@ -81,9 +80,9 @@ const AddDishModal = ({ restaurantId, dish = null, initialName = '', onClose, on
         </div>
 
         <div className="form-group">
-          <label className="form-label">Rating *</label>
+          <label className="form-label">Rating <span className="label-optional">(optional)</span></label>
           <div className={`rating-input-wrapper${errors.rating ? ' rating-error' : ''}`}>
-            <StarRating value={form.rating} onChange={(v) => setForm((f) => ({ ...f, rating: v }))} size="lg" />
+            <StarRating value={form.rating} onChange={(v) => setForm((f) => ({ ...f, rating: f.rating === v ? 0 : v }))} size="lg" />
             {form.rating > 0 && <span className="rating-label">{form.rating}/5</span>}
           </div>
           {errors.rating && <span className="field-error">{errors.rating}</span>}

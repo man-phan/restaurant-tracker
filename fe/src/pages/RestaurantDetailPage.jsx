@@ -44,8 +44,9 @@ const RestaurantDetailPage = () => {
     );
   }
 
-  const avgRating = restaurantDishes.length
-    ? (restaurantDishes.reduce((sum, d) => sum + d.rating, 0) / restaurantDishes.length).toFixed(1)
+  const ratedDishes = restaurantDishes.filter((d) => d.rating != null && d.rating > 0);
+  const avgRating = ratedDishes.length
+    ? (ratedDishes.reduce((sum, d) => sum + d.rating, 0) / ratedDishes.length).toFixed(1)
     : null;
 
   const handleDeleteRestaurant = async () => {

@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
   const { restaurantId, name, rating, note } = req.body;
   if (!restaurantId) return res.status(400).json({ error: 'restaurantId is required' });
   if (!name || !name.trim()) return res.status(400).json({ error: 'Name is required' });
-  if (rating == null || rating < 1 || rating > 5)
+  if (rating != null && (rating < 1 || rating > 5))
     return res.status(400).json({ error: 'Rating must be between 1 and 5' });
   try {
     const ownsRestaurant = await assertRestaurantOwnership(restaurantId, req.user.id);
@@ -62,7 +62,7 @@ router.post('/', async (req, res) => {
     const { rows } = await pool.query(
       `INSERT INTO dishes (user_id, restaurant_id, name, rating, note)
        VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [req.user.id, restaurantId, name.trim(), rating, note ? note.trim() : null]
+      [req.user.id, restaurantId, name.trim(), rating || null, note ? note.trim() : null]
     );
     res.status(201).json(rows[0]);
   } catch (err) {
@@ -74,13 +74,13 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const { name, rating, note } = req.body;
   if (!name || !name.trim()) return res.status(400).json({ error: 'Name is required' });
-  if (rating == null || rating < 1 || rating > 5)
+  if (rating != null && (rating < 1 || rating > 5))
     return res.status(400).json({ error: 'Rating must be between 1 and 5' });
   try {
     const { rows } = await pool.query(
       `UPDATE dishes SET name = $1, rating = $2, note = $3
        WHERE id = $4 AND user_id = $5 RETURNING *`,
-      [name.trim(), rating, note ? note.trim() : null, req.params.id, req.user.id]
+      [name.trim(), rating || null, note ? note.trim() : null, req.params.id, req.user.id]
     );
     if (!rows.length) return res.status(404).json({ error: 'Dish not found' });
     res.json(rows[0]);

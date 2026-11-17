@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import RestaurantCard from '../components/restaurant/RestaurantCard';
 import EmptyState from '../components/common/EmptyState';
+import SearchBar from '../components/common/SearchBar';
 import './RestaurantsPage.css';
 
 const RestaurantsPage = () => {
@@ -11,6 +12,7 @@ const RestaurantsPage = () => {
 
   const charityOnly = searchParams.get('charity') === 'true';
   const districtFilter = searchParams.get('district') || '';
+  const query = searchParams.get('q') || '';
 
   const updateParam = (key, value) => {
     const next = new URLSearchParams(searchParams);
@@ -24,6 +26,7 @@ const RestaurantsPage = () => {
 
   const filtered = restaurants.filter((r) => {
     if (charityOnly && !r.isCharity) return false;
+    if (query.trim() && !(r.name || '').toLowerCase().includes(query.trim().toLowerCase())) return false;
     if (districtFilter === 'none') return !(r.districtId || r.locationId);
     if (districtFilter && r.districtId != districtFilter && r.locationId != districtFilter) return false;
     return true;
@@ -38,6 +41,8 @@ const RestaurantsPage = () => {
           {filtered.length} restaurant{filtered.length !== 1 ? 's' : ''}
         </p>
       </div>
+
+      <SearchBar id="restaurants-search-input" placeholder="Search restaurants…" initialValue={query} onValueChange={(v) => updateParam('q', v)} />
 
       <div className="rp-filters">
         <label className="rp-filter">
@@ -70,7 +75,7 @@ const RestaurantsPage = () => {
         <EmptyState
           icon="🍜"
           title="No restaurants found"
-          description="Try changing the district or charity filter"
+          description="Try changing the search, district or charity filter"
         />
       ) : (
         <div className="rp-list">

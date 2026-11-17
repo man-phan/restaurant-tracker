@@ -55,7 +55,7 @@ const SearchResultsPage = () => {
   return (
     <div className="search-results-page">
       <div className="sr-header">
-        <SearchBar initialValue={query} autoFocus={!query} />
+        <SearchBar initialValue={query} autoFocus={true} />
         {query && (
           <p className="sr-meta">
             Results for <strong>&ldquo;{query}&rdquo;</strong>

@@ -1,18 +1,17 @@
 import React from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import RestaurantCard from '../components/restaurant/RestaurantCard';
 import EmptyState from '../components/common/EmptyState';
-import SearchBar from '../components/common/SearchBar';
 import './RestaurantsPage.css';
 
 const RestaurantsPage = () => {
   const { restaurants, dishes, districts } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const charityOnly = searchParams.get('charity') === 'true';
   const districtFilter = searchParams.get('district') || '';
-  const query = searchParams.get('q') || '';
 
   const updateParam = (key, value) => {
     const next = new URLSearchParams(searchParams);
@@ -26,7 +25,6 @@ const RestaurantsPage = () => {
 
   const filtered = restaurants.filter((r) => {
     if (charityOnly && !r.isCharity) return false;
-    if (query.trim() && !(r.name || '').toLowerCase().includes(query.trim().toLowerCase())) return false;
     if (districtFilter === 'none') return !(r.districtId || r.locationId);
     if (districtFilter && r.districtId != districtFilter && r.locationId != districtFilter) return false;
     return true;
@@ -36,13 +34,14 @@ const RestaurantsPage = () => {
     <div className="restaurants-page">
       <div className="rp-header">
         <Link to="/" className="rp-back">← Home</Link>
-        <h1 className="rp-title">{charityOnly ? '🎗️ Charity Restaurants' : 'All Restaurants'}</h1>
+        <div className="page-title-row">
+          <h1 className="rp-title">{charityOnly ? '🎗️ Charity Restaurants' : 'All Restaurants'}</h1>
+        <button type="button" className="icon-search-btn" onClick={() => navigate('/', { state: { autoFocus: true } })} aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg></button>
+        </div>
         <p className="rp-subtitle">
           {filtered.length} restaurant{filtered.length !== 1 ? 's' : ''}
         </p>
       </div>
-
-      <SearchBar id="restaurants-search-input" placeholder="Search restaurants…" initialValue={query} onValueChange={(v) => updateParam('q', v)} />
 
       <div className="rp-filters">
         <label className="rp-filter">
@@ -75,7 +74,7 @@ const RestaurantsPage = () => {
         <EmptyState
           icon="🍜"
           title="No restaurants found"
-          description="Try changing the search, district or charity filter"
+          description="Try changing the district or charity filter"
         />
       ) : (
         <div className="rp-list">

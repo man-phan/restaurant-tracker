@@ -14,7 +14,8 @@
   box-shadow: 0 0 0 4px var(--accent-glow), 0 8px 32px var(--shadow-elevated);
 }
 
-.sb-icon { font-size: 1.1rem; flex-shrink: 0; }
+.sb-icon { flex-shrink: 0; color: #8E8E93; transition: color 0.2s; }
+.search-bar:focus-within .sb-icon { color: #FF6B00; }
 
 .sb-input {
   flex: 1;
@@ -32,6 +33,7 @@
 .sb-input::-webkit-search-cancel-button { display: none; }
 
 .sb-clear {
+  margin-left: auto;
   background: none;
   border: none;
   color: var(--text-muted);
@@ -48,24 +50,5 @@
   flex-shrink: 0;
 }
 
-.sb-submit {
-  padding: 0.5rem 1rem;
-  background: var(--gradient-brand);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
 @media (hover: hover) and (pointer: fine) {
-  .sb-clear:hover { background: var(--bg-hover); color: var(--text-primary); }
-
-  .sb-submit:hover {
-    opacity: 0.9;
-    transform: scale(1.03);
-  }
-}
+  .sb-clear:hover { background: var(--bg-hover); color: var(--text-primary); }}

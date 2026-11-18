@@ -118,3 +118,6 @@
   flex-direction: column;
   gap: 0.75rem;
 }
+
+.sr-district-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.sr-district-link { padding: 0.5rem 1rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; text-decoration: none; color: var(--text-primary); font-size: 0.9rem; font-weight: 600; min-height: 44px; display: flex; align-items: center; }

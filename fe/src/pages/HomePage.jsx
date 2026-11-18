@@ -1,18 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import SearchBar from '../components/common/SearchBar';
 import RestaurantCard from '../components/restaurant/RestaurantCard';
 import AddRestaurantModal from '../components/restaurant/AddRestaurantModal';
 import EmptyState from '../components/common/EmptyState';
 import { getRecentRestaurants } from '../services/restaurantService';
+import { searchAll } from '../services/searchService';
 import './HomePage.css';
 
 const HomePage = () => {
   const { restaurants, dishes, districts } = useApp();
   const [showAdd, setShowAdd] = useState(false);
   const [recent, setRecent] = useState([]);
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState({ restaurantMatches: [], districtMatches: [] });
   const navigate = useNavigate();
+  const location = useLocation();
+  const autoFocus = !!location.state?.autoFocus;
+  const trimmed = query.trim();
+
+  useEffect(() => {
+    if (!trimmed) { setResults({ restaurantMatches: [], districtMatches: [] }); return undefined; }
+    let active = true;
+    const load = () => searchAll(trimmed).then((r) => { if (active) setResults(r); });
+    load();
+    window.addEventListener('auth-changed', load);
+    return () => { active = false; window.removeEventListener('auth-changed', load); };
+  }, [trimmed, dishes, districts]);
 
   useEffect(() => {
     getRecentRestaurants(5).then(setRecent);
@@ -26,9 +41,37 @@ const HomePage = () => {
     <div className="home-page">
 
       <div className="home-search-wrapper">
-        <SearchBar placeholder="Search restaurants, dishes, locations…" />
+        <SearchBar key={location.key} placeholder="Search restaurants, dishes, locations…" autoFocus={autoFocus} initialValue={query} onValueChange={setQuery} />
       </div>
 
+      {trimmed ? (
+        <div className="home-search-results">
+          {results.districtMatches?.length > 0 && (
+            <section className="home-section">
+              <h2 className="section-title">📍 Locations</h2>
+              <div className="sr-district-list">
+                {results.districtMatches.map((d) => (
+                  <Link key={d.id} to={`/districts/${d.id}`} className="sr-district-link">{d.name} ›</Link>
+                ))}
+              </div>
+            </section>
+          )}
+          {results.restaurantMatches?.length > 0 && (
+            <section className="home-section">
+              <h2 className="section-title">🍜 Restaurants</h2>
+              <div className="restaurant-list">
+                {results.restaurantMatches.map((r) => (
+                  <RestaurantCard key={r.id} restaurant={r} dishes={getDishesForRestaurant(r.id)} district={getDistrictForRestaurant(r.district_id ?? r.districtId)} />
+                ))}
+              </div>
+            </section>
+          )}
+          {!results.districtMatches?.length && !results.restaurantMatches?.length && (
+            <EmptyState icon="😕" title="No results found" description={`Nothing matched "${trimmed}".`} />
+          )}
+        </div>
+      ) : (
+      <>
       {/* Stats */}
       <section className="home-stats">
         <button type="button" className="stat-card stat-card--link" onClick={() => navigate('/restaurants')}>
@@ -70,6 +113,8 @@ const HomePage = () => {
           </div>
         )}
       </section>
+      </>
+      )}
 
       {showAdd && (
         <AddRestaurantModal

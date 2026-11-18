@@ -19,46 +19,55 @@ const SearchBar = ({ initialValue = '', placeholder = 'Search restaurants, dishe
     }
   }, [autoFocus]);
 
-  const handleInputChange = (e) => {
-    const val = e.target.value;
-    setQuery(val);
+  const timerRef = useRef(null);
+
+  useEffect(() => () => clearTimeout(timerRef.current), []);
+
+  const emit = (val) => {
     if (onValueChange) {
       onValueChange(val);
       return;
     }
     const trimmed = val.trim();
-    if (trimmed) {
-      navigate(`/search?q=${encodeURIComponent(trimmed)}`, { replace: true });
-    } else {
-      navigate('/search', { replace: true });
+    navigate(trimmed ? `/search?q=${encodeURIComponent(trimmed)}` : '/search', { replace: true });
+  };
+
+  const handleInputChange = (e) => {
+    const val = e.target.value;
+    setQuery(val);
+    clearTimeout(timerRef.current);
+    if (!val.trim()) {
+      emit('');
+      return;
     }
+    timerRef.current = setTimeout(() => emit(val), 300);
   };
 
   const handleClear = () => {
+    clearTimeout(timerRef.current);
     setQuery('');
-    if (onValueChange) {
-      onValueChange('');
-      return;
-    }
-    navigate('/search', { replace: true });
+    emit('');
+    inputRef.current?.focus();
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onValueChange) return;
-    const trimmed = query.trim();
-    if (trimmed) {
-      navigate(`/search?q=${encodeURIComponent(trimmed)}`, { replace: true });
-    }
+    clearTimeout(timerRef.current);
+    emit(query);
+    inputRef.current?.blur();
   };
 
   return (
     <form className="search-bar" onSubmit={handleSubmit} role="search">
-      <span className="sb-icon">🔍</span>
+      <svg className="sb-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
       <input
         id={id}
         ref={inputRef}
         type="search"
+        enterKeyHint="search"
         className="sb-input"
         value={query}
         onChange={handleInputChange}
@@ -68,9 +77,8 @@ const SearchBar = ({ initialValue = '', placeholder = 'Search restaurants, dishe
         aria-label="Search restaurants, dishes, or locations"
       />
       {query && (
-        <button type="button" className="sb-clear" onClick={handleClear} aria-label="Clear search">✕</button>
+        <button type="button" className="sb-clear" onClick={handleClear} aria-label="Clear search">&times;</button>
       )}
-      <button type="submit" className="sb-submit" aria-label="Search">Go</button>
     </form>
   );
 };

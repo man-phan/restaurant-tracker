@@ -15,7 +15,10 @@ export function openSearchWithKeyboard(navigate) {
     proxy.focus({ preventScroll: true });
     window.__searchProxy = proxy;
     // Safety cleanup in case the Home search bar never takes over focus
-    setTimeout(() => releaseSearchProxy(), 5000);
+    setTimeout(() => {
+      // Only clean up THIS proxy; a newer tap may have created another one
+      if (window.__searchProxy === proxy) releaseSearchProxy();
+    }, 5000);
   }
   // Preload the lazy Home chunk so the search bar mounts quickly after navigation
   import('../pages/HomePage');

@@ -17,6 +17,8 @@ export function openSearchWithKeyboard(navigate) {
     // Safety cleanup in case the Home search bar never takes over focus
     setTimeout(() => releaseSearchProxy(), 5000);
   }
+  // Preload the lazy Home chunk so the search bar mounts quickly after navigation
+  import('../pages/HomePage');
   navigate('/', { state: { autoFocus: true } });
 }
 

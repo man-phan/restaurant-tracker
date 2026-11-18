@@ -13,10 +13,16 @@ const SearchBar = ({ initialValue = '', placeholder = 'Search restaurants, dishe
 
   useEffect(() => {
     if (autoFocus && inputRef.current) {
-      inputRef.current.focus();
-      const len = inputRef.current.value.length;
-      inputRef.current.setSelectionRange(len, len);
+      const timer = setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+          const len = inputRef.current.value.length;
+          inputRef.current.setSelectionRange(len, len);
+        }
+      }, 100);
+      return () => clearTimeout(timer);
     }
+    return undefined;
   }, [autoFocus]);
 
   const timerRef = useRef(null);
@@ -72,7 +78,6 @@ const SearchBar = ({ initialValue = '', placeholder = 'Search restaurants, dishe
         value={query}
         onChange={handleInputChange}
         placeholder={placeholder}
-        autoFocus={autoFocus}
         autoComplete="off"
         aria-label="Search restaurants, dishes, or locations"
       />

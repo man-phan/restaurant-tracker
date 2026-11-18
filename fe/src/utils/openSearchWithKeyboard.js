@@ -1,3 +1,8 @@
+import { flushSync } from 'react-dom';
+
+// Preload the lazy Home chunk as soon as this module loads, so navigation can render synchronously
+import('../pages/HomePage');
+
 // Focus a hidden proxy input synchronously inside the user's tap so mobile
 // browsers open the keyboard, then navigate to Home where SearchBar takes over focus.
 export function openSearchWithKeyboard(navigate) {
@@ -20,9 +25,8 @@ export function openSearchWithKeyboard(navigate) {
       if (window.__searchProxy === proxy) releaseSearchProxy();
     }, 5000);
   }
-  // Preload the lazy Home chunk so the search bar mounts quickly after navigation
-  import('../pages/HomePage');
-  navigate('/', { state: { autoFocus: true } });
+  // Render Home synchronously inside the tap so the real input can be focused within the user gesture
+  flushSync(() => navigate('/', { state: { autoFocus: true } }));
 }
 
 export function releaseSearchProxy() {

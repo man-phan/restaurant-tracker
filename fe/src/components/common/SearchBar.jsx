@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { releaseSearchProxy } from '../../utils/openSearchWithKeyboard';
 import './SearchBar.css';
@@ -11,6 +11,13 @@ const SearchBar = ({ initialValue = '', placeholder = 'Search restaurants, dishe
   useEffect(() => {
     setQuery(initialValue);
   }, [initialValue]);
+
+  useLayoutEffect(() => {
+    // Focus during commit: when navigation is flushed inside the tap, this still counts as a user gesture
+    if (autoFocus && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [autoFocus]);
 
   useEffect(() => {
     if (autoFocus && inputRef.current) {

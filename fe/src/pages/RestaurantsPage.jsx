@@ -3,6 +3,7 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import RestaurantCard from '../components/restaurant/RestaurantCard';
 import EmptyState from '../components/common/EmptyState';
+import { openSearchWithKeyboard } from '../utils/openSearchWithKeyboard';
 import './RestaurantsPage.css';
 
 const RestaurantsPage = () => {
@@ -36,7 +37,7 @@ const RestaurantsPage = () => {
         <Link to="/" className="rp-back">← Home</Link>
         <div className="page-title-row">
           <h1 className="rp-title">{charityOnly ? '🎗️ Charity Restaurants' : 'All Restaurants'}</h1>
-        <button type="button" className="icon-search-btn" onClick={() => navigate('/', { state: { autoFocus: true } })} aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg></button>
+        <button type="button" className="icon-search-btn" onClick={() => openSearchWithKeyboard(navigate)} aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg></button>
         </div>
         <p className="rp-subtitle">
           {filtered.length} restaurant{filtered.length !== 1 ? 's' : ''}

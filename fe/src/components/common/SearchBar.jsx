@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { releaseSearchProxy } from '../../utils/openSearchWithKeyboard';
 import './SearchBar.css';
 
 const SearchBar = ({ initialValue = '', placeholder = 'Search restaurants, dishes, locations…', autoFocus = false, onValueChange, id = 'main-search-input' }) => {
@@ -13,13 +14,16 @@ const SearchBar = ({ initialValue = '', placeholder = 'Search restaurants, dishe
 
   useEffect(() => {
     if (autoFocus && inputRef.current) {
-      const timer = setTimeout(() => {
+      const focusInput = () => {
         if (inputRef.current) {
           inputRef.current.focus();
           const len = inputRef.current.value.length;
           inputRef.current.setSelectionRange(len, len);
         }
-      }, 100);
+      };
+      focusInput();
+      releaseSearchProxy();
+      const timer = setTimeout(focusInput, 100);
       return () => clearTimeout(timer);
     }
     return undefined;

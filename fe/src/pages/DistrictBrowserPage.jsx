@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import DistrictCard from '../components/district/DistrictCard';
 import EmptyState from '../components/common/EmptyState';
+import { openSearchWithKeyboard } from '../utils/openSearchWithKeyboard';
 import './DistrictBrowserPage.css';
 
 const DistrictBrowserPage = () => {
@@ -16,7 +17,7 @@ const DistrictBrowserPage = () => {
       <div className="page-header">
         <div className="page-title-row">
           <h1 className="page-title">Locations</h1>
-        <button type="button" className="icon-search-btn" onClick={() => navigate('/', { state: { autoFocus: true } })} aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg></button>
+        <button type="button" className="icon-search-btn" onClick={() => openSearchWithKeyboard(navigate)} aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg></button>
         </div>
         <p className="page-subtitle">{districts.length} location{districts.length !== 1 ? 's' : ''} tracked</p>
       </div>

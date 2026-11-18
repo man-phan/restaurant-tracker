@@ -22,8 +22,11 @@ const SearchBar = ({ initialValue = '', placeholder = 'Search restaurants, dishe
         }
       };
       focusInput();
-      releaseSearchProxy();
-      const timer = setTimeout(focusInput, 100);
+      // Keep the proxy until the real input really owns focus, so the keyboard never closes
+      const timer = setTimeout(() => {
+        focusInput();
+        if (document.activeElement === inputRef.current) releaseSearchProxy();
+      }, 150);
       return () => clearTimeout(timer);
     }
     return undefined;

@@ -4,15 +4,18 @@ export function openSearchWithKeyboard(navigate) {
   if (typeof document !== 'undefined') {
     window.__searchProxy?.remove();
     const proxy = document.createElement('input');
-    proxy.type = 'search';
+    proxy.type = 'text';
     proxy.setAttribute('aria-hidden', 'true');
+    proxy.setAttribute('enterkeyhint', 'search');
     proxy.tabIndex = -1;
+    // Must be "visible" to the browser (not display:none / 0 size) or mobile won't open the keyboard
     proxy.style.cssText =
-      'position:fixed;top:0;left:0;opacity:0;font-size:16px;width:1px;height:1px;pointer-events:none;';
+      'position:fixed;top:0;left:0;width:40px;height:40px;opacity:0.01;font-size:16px;border:0;padding:0;z-index:-1;';
     document.body.appendChild(proxy);
-    proxy.focus();
+    proxy.focus({ preventScroll: true });
     window.__searchProxy = proxy;
-    setTimeout(() => releaseSearchProxy(), 1500);
+    // Safety cleanup in case the Home search bar never takes over focus
+    setTimeout(() => releaseSearchProxy(), 5000);
   }
   navigate('/', { state: { autoFocus: true } });
 }
@@ -23,4 +26,3 @@ export function releaseSearchProxy() {
     window.__searchProxy = null;
   }
 }
-
